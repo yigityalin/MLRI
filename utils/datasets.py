@@ -62,5 +62,10 @@ def load_dataset(
 
 
 def get_class_distribution(dataset: tf.data.Dataset) -> np.ndarray:
+    """
+    returns the class distribution a dataset
+    :param dataset: a tf.data.Dataset
+    :return: the number of instances belonging to each class
+    """
     labels = np.concatenate([labels for _, labels in dataset.as_numpy_iterator()])
-    return np.unique(labels, return_counts=True)
+    return np.unique(labels, return_counts=True)[1]
