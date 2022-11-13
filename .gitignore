@@ -1,4 +1,5 @@
 .DS_Store
+logs_tensorboard_*/
 .idea/
 data/
 
