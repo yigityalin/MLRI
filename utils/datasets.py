@@ -8,7 +8,7 @@ from . import config
 def load_dataset(
         directory=config.DATA_DIR, valid_split: float = 0.1, test_split: float = 0.1, batch_size: int = 32,
         image_size: tuple[int, int] = (128, 128), shuffle_buffer_size: int = 8, seed: int = None,
-        prefetch_buffer_size: int = tf.data.AUTOTUNE, cache: bool =True, return_class_names=True
+        prefetch_buffer_size: int = tf.data.AUTOTUNE, cache: bool = True, return_class_names: bool = False
 ) -> tuple[tf.data.Dataset, ...] | tuple[tuple[tf.data.Dataset, ...], list[str, ...]]:
     """
     Loads and splits the image dataset
