@@ -13,7 +13,7 @@ import tensorflow as tf
 
 from utils import config, datasets, models
 
-MODEL_NAME = 'VGG16'
+MODEL_NAME = 'VGG16_learning0.15_denseleakyrelu'
 EPOCHS = 200
 
 train_dataset, validation_dataset, test_dataset = datasets.load_dataset()
@@ -23,16 +23,6 @@ preprocessing = keras.Sequential([
 ])
 
 top = keras.Sequential([
-    layers.Conv2D(filters=16, kernel_size=(3, 3), padding='same',
-                  activation=keras.layers.LeakyReLU(alpha=0.07),
-                  kernel_initializer='he_normal'),
-    layers.MaxPooling2D(pool_size=(2, 2)),
-    layers.Conv2D(filters=32, kernel_size=(3, 3), padding='same',
-                  activation=keras.layers.LeakyReLU(alpha=0.07),
-                  kernel_initializer='he_normal'),
-    layers.MaxPooling2D(pool_size=(2, 2)),
-    layers.Dropout(0.25),
-    layers.Flatten(),
     layers.Dense(256, activation=keras.layers.LeakyReLU(alpha=0.05),
                  kernel_initializer='he_normal'),
     layers.Dense(4, kernel_initializer='he_normal',
@@ -42,8 +32,9 @@ top = keras.Sequential([
 model = models.create_model(
     model_name=MODEL_NAME,
     preprocessing_layers=preprocessing,
-    base_model=None,
+    base_model=VGG16,
     top_layers=top,
+    learning_rate=0.15
 )
 
 history = models.fit_model(
