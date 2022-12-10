@@ -50,6 +50,17 @@ def get_default_tensorboard_logs_dir(model_name: str, total_epochs: int) -> Path
     return get_logs_dir() / f'logs_tensorboard_{model_name}-total_epochs_{total_epochs}'
 
 
+def get_default_checkpoint_dir() -> Path:
+    """
+    returns the default model checkpoint directory
+    :return: the model directory
+    """
+    checkpoint_dir = get_logs_dir() / f'logs_model_checkpoint'
+    if not checkpoint_dir.exists():
+        checkpoint_dir.mkdir(exist_ok=True)
+    return checkpoint_dir
+
+
 def get_default_history_path(model_name: str, total_epochs: int) -> Path:
     """
     returns the default history path

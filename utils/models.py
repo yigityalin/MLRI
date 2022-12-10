@@ -83,6 +83,7 @@ def fit_model(model: keras.Model,
               model_path: None | str | Path = None,
               log_dir: None | str | Path = None,
               history_path: None | str | Path = None,
+              checkpoint_path: None | str | Path = None,
               train_data=None,
               validation_data=None,
               epochs=1,
@@ -112,13 +113,18 @@ def fit_model(model: keras.Model,
         log_dir = config.get_default_tensorboard_logs_dir(model.name, epochs)
     if history_path is None:
         history_path = config.get_default_history_path(model.name, epochs)
+    if checkpoint_path is None:
+        checkpoint_path = config.get_default_checkpoint_dir() \
+                          / 'weights.{epoch:03d}-{val_loss:.4f}-{val_sparse_categorical_accuracy:.4f}.hdf5'
 
     config.check_model_path(model_path)
     config.check_logs_path(log_dir)
     config.check_logs_path(history_path)
 
     if callbacks is None:
-        callbacks = [keras.callbacks.TensorBoard(log_dir=log_dir)]
+        callbacks = [keras.callbacks.TensorBoard(log_dir=log_dir),
+                     keras.callbacks.ModelCheckpoint(checkpoint_path, monitor='val_sparse_categorical_accuracy',
+                                                     mode='max', save_best_only=True, save_weights_only=True)]
 
     history = model.fit(train_data,
                         epochs=epochs,
@@ -132,7 +138,7 @@ def fit_model(model: keras.Model,
                         validation_freq=validation_freq,
                         max_queue_size=max_queue_size)
 
-    model.save(model_path)
+    model.save_weights(config.get_default_checkpoint_dir() / f'weights.epoch_{epochs}.hdf5')
     config.save_history(history, history_path)
     return history
 
