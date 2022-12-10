@@ -49,7 +49,7 @@ top = keras.Sequential([
 model = models.create_model(
     model_name=MODEL_NAME,
     preprocessing_layers=preprocessing,
-    base_model=None,
+    base_model=VGG19,
     top_layers=top,
 )
 
