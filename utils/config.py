@@ -55,7 +55,7 @@ def get_default_checkpoint_dir() -> Path:
     returns the default model checkpoint directory
     :return: the model directory
     """
-    checkpoint_dir = get_logs_dir() / f'logs_model_checkpoint'
+    checkpoint_dir = Path().resolve().parent / 'model_checkpoints'
     if not checkpoint_dir.exists():
         checkpoint_dir.mkdir(exist_ok=True)
     return checkpoint_dir
